@@ -19,22 +19,4 @@ document.addEventListener('DOMContentLoaded', () => {
   tabButtons.forEach((btn) => {
     btn.addEventListener('click', () => activateTab(btn.dataset.tab));
   });
-
-  // Soporte de navegación con teclado (flechas izquierda/derecha)
-  const tabList = document.querySelector('.tabs');
-  tabList.addEventListener('keydown', (e) => {
-    const currentIndex = Array.from(tabButtons).findIndex((b) => b.classList.contains('active'));
-    let newIndex = null;
-
-    if (e.key === 'ArrowRight') {
-      newIndex = (currentIndex + 1) % tabButtons.length;
-    } else if (e.key === 'ArrowLeft') {
-      newIndex = (currentIndex - 1 + tabButtons.length) % tabButtons.length;
-    }
-
-    if (newIndex !== null) {
-      tabButtons[newIndex].focus();
-      activateTab(tabButtons[newIndex].dataset.tab);
-    }
-  });
 });
