@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculos para electricistas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" >
+</head>
+<body>
+  <header class="main-header">
+    <div class="header-content">
+      <div class="logo">
+        <span class="logo-icon">⚡</span>
+        <div class="logo-text">
+          <h1>Calculos para Electricistas</h1>
+        </div>
+      </div>
+    </div>
+    <div class="header-line"></div>
+  </header>
+
+  <main class="container">
+
+    <!-- Navegación de pestañas -->
+    <nav class="tabs" role="tablist" aria-label="Calculadoras eléctricas">
+      <button class="tab-btn active" data-tab="caida-tension" role="tab" aria-selected="true" aria-controls="panel-caida-tension" id="tab-caida-tension">
+        <span class="tab-icon">🔻</span>
+        <span class="tab-label">Caída de Tensión</span>
+      </button>
+      <button class="tab-btn" data-tab="factor-relleno" role="tab" aria-selected="false" aria-controls="panel-factor-relleno" id="tab-factor-relleno">
+        <span class="tab-icon">🧵</span>
+        <span class="tab-label">Factor de Relleno</span>
+      </button>
+      <button class="tab-btn" data-tab="calculos-varios" role="tab" aria-selected="false" aria-controls="panel-calculos-varios" id="tab-calculos-varios">
+        <span class="tab-icon">🧮</span>
+        <span class="tab-label">Cálculos Varios</span>
+      </button>
+    </nav>
+
+    <!-- Contenido de pestañas -->
+    <section class="tab-content">
+
+      <div class="tab-panel active" id="panel-caida-tension" role="tabpanel" aria-labelledby="tab-caida-tension">
+        <div class="panel-header">
+          <h2>Caída de Tensión</h2>
+          <p class="panel-desc">Calcula la caída de voltaje en un circuito eléctrico.</p>
+        </div>
+        <div class="panel-body">
+          <!-- Contenido pendiente -->
+        </div>
+      </div>
+
+      <div class="tab-panel" id="panel-factor-relleno" role="tabpanel" aria-labelledby="tab-factor-relleno" hidden>
+        <div class="panel-header">
+          <h2>Factor de Relleno</h2>
+          <p class="panel-desc">Calcula el porcentaje de ocupación de conductores en tubería.</p>
+        </div>
+        <div class="panel-body">
+          <!-- Contenido pendiente -->
+        </div>
+      </div>
+
+      <div class="tab-panel" id="panel-calculos-varios" role="tabpanel" aria-labelledby="tab-calculos-varios" hidden>
+        <div class="panel-header">
+          <h2>Cálculos Varios</h2>
+          <p class="panel-desc">Otras herramientas de cálculo eléctrico.</p>
+        </div>
+        <div class="panel-body">
+          <!-- Contenido pendiente -->
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <footer class="main-footer">
+    
+  </footer>
+
+  <script src="aplicacion.js"></script>
+</body>
+</html>
