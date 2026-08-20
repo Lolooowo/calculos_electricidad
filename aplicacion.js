@@ -20,3 +20,5 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.addEventListener('click', () => activateTab(btn.dataset.tab));
   });
 });
+//Te acordas que la tabla de area_conductor se le tiene que multiplicar 
+// el area con el numero de cables ya que es la de varios calibres en un tubo.
