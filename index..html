@@ -14,7 +14,7 @@
       <div class="logo">
         <span class="logo-icon">⚡</span>
         <div class="logo-text">
-          <h1>Calculos para Electricistas</h1>
+          <h1>Cálculos para Electricistas</h1>
         </div>
       </div>
     </div>
@@ -48,7 +48,115 @@
           <p class="panel-desc">Calcula la caída de voltaje en un circuito eléctrico.</p>
         </div>
         <div class="panel-body">
-          <!-- Contenido pendiente -->
+          
+          <div class="calc-form" id="form-caida-tension">
+
+            <!-- 1. Tipo de circuito -->
+            <div class="field-group">
+              <label class="field-label">Tipo de circuito</label>
+              <div class="radio-pill-group" id="tipo-circuito">
+                <label class="radio-pill">
+                  <input type="radio" name="tipoCircuito" value="derivado" checked>
+                  <span>Derivado</span>
+                </label>
+                <label class="radio-pill">
+                  <input type="radio" name="tipoCircuito" value="total">
+                  <span>Total</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- 2. Voltaje nominal -->
+            <div class="field-group">
+              <label class="field-label" for="voltajeNominal">Voltaje nominal del sistema</label>
+              <div class="input-with-select">
+                <select id="voltajeNominal">
+                  <option value="120">120 V</option>
+                  <option value="220" selected>220 V</option>
+                  <option value="240">240 V</option>
+                  <option value="380">380 V</option>
+                  <option value="480">480 V</option>
+                  <option value="otro">Otro (ingresar manualmente)</option>
+                </select>
+                <input type="number" id="voltajeManual" placeholder="Voltios" min="1" step="0.1" hidden>
+              </div>
+            </div>
+
+            <!-- 3. Método de entrada de carga -->
+            <div class="field-group">
+              <label class="field-label">Dato de carga disponible</label>
+              <div class="radio-pill-group" id="metodo-carga">
+                <label class="radio-pill">
+                  <input type="radio" name="metodoCarga" value="corriente" checked>
+                  <span>Corriente (A)</span>
+                </label>
+                <label class="radio-pill">
+                  <input type="radio" name="metodoCarga" value="potencia">
+                  <span>Potencia (W)</span>
+                </label>
+              </div>
+
+              <div class="sub-fields" id="campo-corriente">
+                <label class="field-label small" for="corriente">Corriente de carga (A)</label>
+                <input type="number" id="corriente" placeholder="Ej. 20" min="0" step="0.01">
+              </div>
+
+              <div class="sub-fields" id="campo-potencia" hidden>
+                <div class="field-row">
+                  <div>
+                    <label class="field-label small" for="potencia">Potencia (W)</label>
+                    <input type="number" id="potencia" placeholder="Ej. 3000" min="0" step="0.1">
+                  </div>
+                  <div>
+                    <label class="field-label small" for="factorPotencia">Factor de potencia</label>
+                    <input type="number" id="factorPotencia" placeholder="0.0 - 1.0" min="0" max="1" step="0.01" value="1">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 4. Longitud -->
+            <div class="field-group">
+              <label class="field-label" for="longitud">Longitud del circuito (ida, un solo sentido)</label>
+              <input type="number" id="longitud" placeholder="Ej. 25" min="0" step="0.01">
+              <span class="field-hint">Distancia desde el tablero/fuente hasta la carga.</span>
+            </div>
+
+            <!-- 5. Material del conductor -->
+            <div class="field-group">
+              <label class="field-label">Material del conductor</label>
+              <div class="radio-pill-group" id="material-conductor">
+                <label class="radio-pill">
+                  <input type="radio" name="materialConductor" value="cobre" checked>
+                  <span>Cobre</span>
+                </label>
+                <label class="radio-pill">
+                  <input type="radio" name="materialConductor" value="aluminio">
+                  <span>Aluminio</span>
+                </label>
+              </div>
+            </div>
+            <!-- 6. Área de la sección transversal del conductor -->
+            <div class="field-group">
+              <label class="field-label" for="areaSeccion">Área de la sección transversal del conductor (mm²)</label>
+              <input type="number" id="areaSeccion" placeholder="Ej. 2.5" min="0" step="0.01">
+              <span class="field-hint">Área real del conductor en mm² (ej. 1.5, 2.5, 4, 6, 10...).</span>
+            </div>
+
+            <!-- Botón calcular -->
+            <button type="button" id="btnCalcularCaidaTension" class="btn-calcular">
+              <span class="btn-icon">⚡</span> Calcular caída de tensión
+            </button>
+
+            <!-- Resultado -->
+            <div class="resultado-box" id="resultadoCaidaTension" hidden>
+              <!-- Se llenará dinámicamente con JS -->
+            </div>
+
+          </div>
+
+        </div>
+      </div>
         </div>
       </div>
 

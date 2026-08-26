@@ -12,6 +12,8 @@
   --shadow-glow: 0 0 25px rgba(255, 214, 10, 0.15);
   --font-display: 'Orbitron', sans-serif;
   --font-body: 'Rajdhani', sans-serif;
+  --danger: #ff4d4d;
+  --success: #2ee6a6;
 }
 
 * {
@@ -256,6 +258,194 @@ body::before {
   color: var(--text-dim);
 }
 
+/* ==========================================================
+   Formulario de cálculo (reutilizable en las 3 pestañas)
+========================================================== */
+
+.calc-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 640px;
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.field-label {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-main);
+  letter-spacing: 0.3px;
+}
+
+.field-label.small {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  font-weight: 500;
+}
+
+.field-hint {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  opacity: 0.8;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+/* Inputs y selects */
+input[type="number"],
+input[type="text"],
+select {
+  background: var(--bg-panel-2);
+  border: 1px solid var(--border-soft);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  padding: 0.7rem 0.9rem;
+  border-radius: 10px;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
+}
+
+input[type="number"]:focus,
+input[type="text"]:focus,
+select:focus {
+  border-color: var(--yellow);
+  box-shadow: 0 0 0 3px rgba(255, 214, 10, 0.15);
+}
+
+input::placeholder {
+  color: var(--text-dim);
+  opacity: 0.6;
+}
+
+select {
+  cursor: pointer;
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--yellow) 50%),
+                     linear-gradient(135deg, var(--yellow) 50%, transparent 50%);
+  background-position: calc(100% - 18px) center, calc(100% - 13px) center;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  padding-right: 2.2rem;
+}
+
+.input-with-select {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+/* Radio pills (grupo tipo botón) */
+.radio-pill-group {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.radio-pill {
+  position: relative;
+  cursor: pointer;
+}
+
+.radio-pill input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.radio-pill span {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.55rem 1.1rem;
+  border: 1px solid var(--border-soft);
+  border-radius: 999px;
+  background: var(--bg-panel-2);
+  color: var(--text-dim);
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.radio-pill input:checked + span {
+  background: linear-gradient(135deg, rgba(255, 214, 10, 0.18), rgba(255, 214, 10, 0.05));
+  border-color: var(--yellow);
+  color: var(--yellow);
+  box-shadow: 0 0 12px rgba(255, 214, 10, 0.15);
+}
+
+.radio-pill:hover span {
+  border-color: var(--yellow);
+  color: var(--text-main);
+}
+
+/* Sub-campos condicionales */
+.sub-fields {
+  margin-top: 0.5rem;
+  padding-left: 0.1rem;
+}
+
+/* Botón calcular */
+.btn-calcular {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  background: linear-gradient(135deg, var(--yellow), var(--yellow-soft));
+  color: #14171c;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: 0.4px;
+  padding: 0.9rem 1.4rem;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+  box-shadow: 0 6px 20px rgba(255, 214, 10, 0.25);
+}
+
+.btn-calcular:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(255, 214, 10, 0.35);
+}
+
+.btn-calcular:active {
+  transform: translateY(0);
+}
+
+.btn-icon {
+  font-size: 1.1rem;
+}
+
+/* Caja de resultado */
+.resultado-box {
+  background: var(--bg-panel-2);
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  padding: 1.2rem 1.4rem;
+  animation: fadeIn 0.3s ease;
+}
+
+.resultado-box.ok {
+  border-color: var(--success);
+  box-shadow: 0 0 16px rgba(46, 230, 166, 0.15);
+}
+
+.resultado-box.fail {
+  border-color: var(--danger);
+  box-shadow: 0 0 16px rgba(255, 77, 77, 0.15);
+}
+
 /* ---------- Footer ---------- */
 .main-footer {
   text-align: center;
@@ -280,5 +470,8 @@ body::before {
   }
   .tab-panel {
     padding: 1.5rem 1.2rem 2rem;
+  }
+  .field-row {
+    grid-template-columns: 1fr;
   }
 }
