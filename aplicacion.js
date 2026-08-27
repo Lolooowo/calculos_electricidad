@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.addEventListener('click', () => activateTab(btn.dataset.tab));
   });
 });
-//Te acordas que la tabla de area_conductor se le tiene que multiplicar 
+//Te acordás que la tabla de area_conductor se le tiene que multiplicar 
 // el area con el numero de cables ya que es la de varios calibres en un tubo.
 
   const selectVoltaje = document.getElementById('voltajeNominal');
@@ -39,14 +39,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnCalcular = document.getElementById('btnCalcularCaidaTension');
   const resultadoBox = document.getElementById('resultadoCaidaTension');
 
-  // Mostrar campo de voltaje manual si se elige "Otro"
   selectVoltaje.addEventListener('change', () => {
     const esOtro = selectVoltaje.value === 'otro';
     inputVoltajeManual.hidden = !esOtro;
     if (esOtro) inputVoltajeManual.focus();
   });
 
-  // Alternar entre Corriente y Potencia+F.P. según el método elegido
   radiosMetodoCarga.forEach((radio) => {
     radio.addEventListener('change', () => {
       const usaPotencia = radio.value === 'potencia' && radio.checked;
@@ -55,20 +53,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-/* -----------------------------------------------------
-   RESISTIVIDAD constante por material (Ω·mm²/m)
------------------------------------------------------ */
+
 const RESISTIVIDAD = {
   cobre: 0.0175,
   aluminio: 0.0282
 };
 
-// Referencia al nuevo campo de área de sección
 const inputAreaSeccion = document.getElementById('areaSeccion');
 
-/* -----------------------------------------------------
-   Validación de datos antes de calcular
------------------------------------------------------ */
 function validarFormulario() {
   const errores = [];
 
@@ -103,17 +95,7 @@ function validarFormulario() {
   return errores;
 }
 
-/* -----------------------------------------------------
-   CALCULAR_CAIDA_TENSION
-   Fórmulas:
-     Monofásico: VD = (2 x ρ x I x L) / S
-     Trifásico:  VD = (√3 x ρ x I x L) / S
-   donde:
-     ρ = resistividad del material (Ω·mm²/m)
-     I = corriente (A)
-     L = longitud en metros (ida)
-     S = área de la sección transversal (mm²)
------------------------------------------------------ */
+//Pa calcular la caida de tension y su pocentaje de eso
 function calcularCaidaTension() {
   const errores = validarFormulario();
 
@@ -156,7 +138,6 @@ function calcularCaidaTension() {
 
 btnCalcular.addEventListener('click', calcularCaidaTension);
 
-/* Estos son para poder leer los valores de los botones */
   function obtenerVoltajeNominal() {
     if (selectVoltaje.value === 'otro') {
       return parseFloat(inputVoltajeManual.value);
@@ -176,8 +157,7 @@ btnCalcular.addEventListener('click', calcularCaidaTension);
     return document.querySelector('input[name="metodoCarga"]:checked').value;
   }
 
-  // Calcula la corriente final, ya sea ingresada directamente
-  // o derivada de potencia + factor de potencia
+  //Calcular la corriente dependiendo del fator de potencia 
   function obtenerCorriente(voltaje) {
     const metodo = obtenerMetodoCarga();
 
@@ -196,10 +176,6 @@ btnCalcular.addEventListener('click', calcularCaidaTension);
       return corrienteReal;
   }
 }
-
-  /* -----------------------------------------------------
-     Validación de datos antes de calcular
-  ----------------------------------------------------- */
   function validarFormulario() {
     const errores = [];
 
@@ -230,10 +206,7 @@ btnCalcular.addEventListener('click', calcularCaidaTension);
     return errores;
   }
 ;
-/* ---------------------------------------------------
-   3) FORMULARIO: CÁLCULOS VARIOS (Ley de Ohm / Watt)
-   Sin gráficos: solo 2 selects + inputs + boton.
---------------------------------------------------- */
+//Seccion pa los calculos varios
 
 const NOMBRES = {
   V: 'Voltaje',
