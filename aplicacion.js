@@ -316,3 +316,4 @@ selectDatos.addEventListener('change', actualizarInputs);
 btnCalcularVarios.addEventListener('click', calcularVarios);
 
 actualizarOpcionesDatos();
+
