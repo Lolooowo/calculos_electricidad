@@ -140,8 +140,10 @@ function calcularCaidaTension() {
 
   const caidaVoltios = (rho * corriente * (longitud*2)) / area;
   const caidaPorcentaje = (caidaVoltios / voltaje) * 100;
-
-  const limite = 3; // % límite de referencia (ajustable)
+  var limite = 3;
+  if(tipoCircuito === 'total') {
+      limite = 5   
+  }
   const cumple = caidaPorcentaje <= limite;
 
   resultadoBox.classList.add(cumple ? 'ok' : 'fail');
@@ -154,9 +156,7 @@ function calcularCaidaTension() {
 
 btnCalcular.addEventListener('click', calcularCaidaTension);
 
-  /* -----------------------------------------------------
-     Helpers de lectura de datos del formulario
-  ----------------------------------------------------- */
+/* Estos son para poder leer los valores de los botones */
   function obtenerVoltajeNominal() {
     if (selectVoltaje.value === 'otro') {
       return parseFloat(inputVoltajeManual.value);
@@ -230,3 +230,116 @@ btnCalcular.addEventListener('click', calcularCaidaTension);
     return errores;
   }
 ;
+/* ---------------------------------------------------
+   3) FORMULARIO: CÁLCULOS VARIOS (Ley de Ohm / Watt)
+   Sin gráficos: solo 2 selects + inputs + boton.
+--------------------------------------------------- */
+
+const NOMBRES = {
+  V: 'Voltaje',
+  I: 'Corriente',
+  R: 'Resistencia',
+  P: 'Potencia'
+};
+
+const UNIDADES = {
+  V: 'V',
+  I: 'A',
+  R: 'Ω',
+  P: 'W'
+};
+
+const FORMULAS = {
+  V: [
+    { datos: ['I', 'R'], texto: 'Corriente y Resistencia', calcular: (I, R) => I * R },
+    { datos: ['P', 'I'], texto: 'Potencia y Corriente', calcular: (P, I) => P / I },
+    { datos: ['P', 'R'], texto: 'Potencia y Resistencia', calcular: (P, R) => Math.sqrt(P * R) }
+  ],
+  I: [
+    { datos: ['V', 'R'], texto: 'Voltaje y Resistencia', calcular: (V, R) => V / R },
+    { datos: ['P', 'V'], texto: 'Potencia y Voltaje', calcular: (P, V) => P / V },
+    { datos: ['P', 'R'], texto: 'Potencia y Resistencia', calcular: (P, R) => Math.sqrt(P / R) }
+  ],
+  R: [
+    { datos: ['V', 'I'], texto: 'Voltaje y Corriente', calcular: (V, I) => V / I },
+    { datos: ['V', 'P'], texto: 'Voltaje y Potencia', calcular: (V, P) => (V * V) / P },
+    { datos: ['P', 'I'], texto: 'Potencia y Corriente', calcular: (P, I) => P / (I * I) }
+  ],
+  P: [
+    { datos: ['V', 'I'], texto: 'Voltaje y Corriente', calcular: (V, I) => V * I },
+    { datos: ['V', 'R'], texto: 'Voltaje y Resistencia', calcular: (V, R) => (V * V) / R },
+    { datos: ['I', 'R'], texto: 'Corriente y Resistencia', calcular: (I, R) => (I * I) * R }
+  ]
+};
+
+const selectMagnitud = document.getElementById('magnitudCalcular');
+const selectDatos = document.getElementById('datosConocidos');
+const inputsVariables = document.getElementById('inputs-variables');
+const btnCalcularVarios = document.getElementById('btnCalcularVarios');
+const resultadoVarios = document.getElementById('resultadoCalculosVarios');
+
+function actualizarOpcionesDatos() {
+  const magnitud = selectMagnitud.value;
+  const opciones = FORMULAS[magnitud];
+
+  selectDatos.innerHTML = '';
+  opciones.forEach((opcion, index) => {
+    const option = document.createElement('option');
+    option.value = index;
+    option.textContent = opcion.texto;
+    selectDatos.appendChild(option);
+  });
+
+  actualizarInputs();
+}
+
+function actualizarInputs() {
+  const magnitud = selectMagnitud.value;
+  const indice = parseInt(selectDatos.value);
+  const opcion = FORMULAS[magnitud][indice];
+
+  inputsVariables.innerHTML = '';
+
+  opcion.datos.forEach((letra) => {
+    const campo = document.createElement('div');
+    campo.innerHTML = `
+      <label class="field-label small" for="input-${letra}">${NOMBRES[letra]} (${letra}) en ${UNIDADES[letra]}</label>
+      <input type="number" id="input-${letra}" placeholder="Ej. 10" step="0.01">
+    `;
+    inputsVariables.appendChild(campo);
+  });
+
+  resultadoVarios.hidden = true;
+}
+
+function calcularVarios() {
+  const magnitud = selectMagnitud.value;
+  const indice = parseInt(selectDatos.value);
+  const opcion = FORMULAS[magnitud][indice];
+
+  const valor1 = parseFloat(document.getElementById(`input-${opcion.datos[0]}`).value);
+  const valor2 = parseFloat(document.getElementById(`input-${opcion.datos[1]}`).value);
+
+  resultadoVarios.hidden = false;
+  resultadoVarios.classList.remove('ok', 'fail');
+
+  if (isNaN(valor1) || isNaN(valor2) || valor1 <= 0 || valor2 <= 0) {
+    resultadoVarios.classList.add('fail');
+    resultadoVarios.innerHTML = '<strong>Ingresa valores numéricos válidos en ambos campos.</strong>';
+    return;
+  }
+
+  const resultado = opcion.calcular(valor1, valor2);
+
+  resultadoVarios.classList.add('ok');
+  resultadoVarios.innerHTML = `
+    <strong>${NOMBRES[magnitud]} (${magnitud}) = ${resultado.toFixed(3)} ${UNIDADES[magnitud]}</strong>
+    <p>Calculado con: ${opcion.texto}</p>
+  `;
+}
+
+selectMagnitud.addEventListener('change', actualizarOpcionesDatos);
+selectDatos.addEventListener('change', actualizarInputs);
+btnCalcularVarios.addEventListener('click', calcularVarios);
+
+actualizarOpcionesDatos();

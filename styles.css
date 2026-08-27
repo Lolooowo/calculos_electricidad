@@ -475,3 +475,68 @@ select {
     grid-template-columns: 1fr;
   }
 }
+.wheel-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+  max-width: 640px;
+}
+
+.ohm-wheel {
+  width: 280px;
+  height: 280px;
+  max-width: 100%;
+}
+
+.wheel-ring {
+  fill: var(--bg-panel-2);
+  stroke: var(--border-soft);
+  stroke-width: 2;
+}
+
+.wheel-quadrant {
+  fill: transparent;
+  stroke: none;
+  cursor: pointer;
+  transition: fill 0.2s ease;
+}
+
+.wheel-quadrant:hover {
+  fill: rgba(255, 214, 10, 0.12);
+}
+
+.wheel-quadrant.selected {
+  fill: rgba(255, 214, 10, 0.22);
+}
+
+.wheel-divider {
+  stroke: var(--border-soft);
+  stroke-width: 2;
+  pointer-events: none;
+}
+
+.wheel-label {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 900;
+  fill: var(--yellow);
+  pointer-events: none;
+  text-anchor: middle;
+}
+
+.wheel-sublabel {
+  font-family: var(--font-body);
+  font-size: 11px;
+  fill: var(--text-dim);
+  pointer-events: none;
+  text-anchor: middle;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.wheel-hint {
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  text-align: center;
+}

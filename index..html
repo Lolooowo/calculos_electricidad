@@ -152,9 +152,7 @@
             <div class="resultado-box" id="resultadoCaidaTension" hidden>
               <!-- Se llenará dinámicamente con JS -->
             </div>
-
           </div>
-
         </div>
       </div>
         </div>
@@ -176,7 +174,36 @@
           <p class="panel-desc">Otras herramientas de cálculo eléctrico.</p>
         </div>
         <div class="panel-body">
-          <!-- Contenido pendiente -->
+           <div class="calc-form" id="form-calculos-varios">
+            <!-- Para elegir que necesitamos calcular al inicio -->
+            <div class="field-group">
+              <label class="field-label" for="magnitudCalcular">¿Qué quieres calcular?</label>
+              <select id="magnitudCalcular">
+                <option value="V">Voltaje (V) - Voltios</option>
+                <option value="I">Corriente (I) - Amperios</option>
+                <option value="R">Resistencia (R) - Ohmios</option>
+                <option value="P">Potencia (P) - Watts</option>
+              </select>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label" for="datosConocidos">¿Qué datos conoces?</label>
+              <select id="datosConocidos">
+              </select>
+            </div>
+
+            <div class="field-row" id="inputs-variables">
+
+            </div>
+
+            <button type="button" id="btnCalcularVarios" class="btn-calcular">
+            </button>
+
+            <!-- Resultado -->
+            <div class="resultado-box" id="resultadoCalculosVarios" hidden>
+            </div>
+
+          </div>
         </div>
       </div>
 
