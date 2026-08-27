@@ -359,3 +359,6 @@ const TABLA_FINAL ={
   "2": 3.71,
   "3": 8.29
 }
+
+const mm_a_plg = 645.2
+

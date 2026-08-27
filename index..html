@@ -164,7 +164,55 @@
           <p class="panel-desc">Calcula el porcentaje de ocupación de conductores en tubería.</p>
         </div>
         <div class="panel-body">
-          <!-- Contenido pendiente -->
+          <div class="calc-form" id="form-factor-relleno">
+                <div class="field-group">
+                  <label class="field-label">Tipo de cálculo</label>
+                  <div class="radio-pill-group" id="tipo-calculo-relleno">
+                    <label class="radio-pill">
+                      <input type="radio" name="tipoCalculoRelleno" value="uno" checked>
+                      <span>Un solo calibre</span>
+                    </label>
+                    <label class="radio-pill">
+                      <input type="radio" name="tipoCalculoRelleno" value="varios">
+                      <span>Varios calibres</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="sub-fields" id="campos-calibre-unico">
+
+                  <div class="field-row">
+                    <div class="field-group">
+                      <label class="field-label small" for="calibreUnico">Calibre AWG</label>
+                      <select id="calibreUnico">
+                        <option value="18">18 AWG</option>
+                        <option value="16">16 AWG</option>
+                        <option value="14">14 AWG</option>
+                        <option value="12" selected>12 AWG</option>
+                        <option value="10">10 AWG</option>
+                        <option value="8">8 AWG</option>
+                        <option value="6">6 AWG</option>
+                        <option value="4">4 AWG</option>
+                        <option value="3">3 AWG</option>
+                        <option value="2">2 AWG</option>
+                        <option value="1">1 AWG</option>
+                        <option value="0">1/0 AWG</option>
+                        <option value="00">2/0 AWG</option>
+                        <option value="000">3/0 AWG</option>
+                        <option value="0000">4/0 AWG</option>
+                      </select>
+                    </div>
+
+                    <div class="field-group">
+                      <label class="field-label small" for="cantidadCablesUnico">Cantidad de cables</label>
+                      <input type="number" id="cantidadCablesUnico" placeholder="Ej. 5" min="1" step="1">
+                    </div>
+                  </div>
+
+                </div>
+xdddd
+
+              </div>
         </div>
       </div>
 
