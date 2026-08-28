@@ -155,9 +155,6 @@
           </div>
         </div>
       </div>
-        </div>
-      </div>
-
       <div class="tab-panel" id="panel-factor-relleno" role="tabpanel" aria-labelledby="tab-factor-relleno" hidden>
         <div class="panel-header">
           <h2>Factor de Relleno</h2>
@@ -180,6 +177,7 @@
                 </div>
 
                 <div class="sub-fields" id="campos-calibre-unico">
+                  
 
                   <div class="field-row">
                     <div class="field-group">
@@ -208,9 +206,53 @@
                       <input type="number" id="cantidadCablesUnico" placeholder="Ej. 5" min="1" step="1">
                     </div>
                   </div>
-
+                
                 </div>
-xdddd
+                  <div class="sub-fields" id="campos-calibre-mixto" hidden>
+
+                    <div class="filas-calibres" id="filas-calibres-mixto">
+
+                      <!-- Fila de calibre (plantilla repetible) -->
+                      <div class="fila-calibre">
+                        <div class="field-group">
+                          <label class="field-label small">Calibre AWG</label>
+                          <select class="calibre-mixto-select">
+                            <option value="18">18 AWG</option>
+                            <option value="16">16 AWG</option>
+                            <option value="14">14 AWG</option>
+                            <option value="12" selected>12 AWG</option>
+                            <option value="10">10 AWG</option>
+                            <option value="8">8 AWG</option>
+                            <option value="6">6 AWG</option>
+                            <option value="4">4 AWG</option>
+                            <option value="2">2 AWG</option>
+                          </select>
+                        </div>
+
+                        <div class="field-group">
+                          <label class="field-label small">Cantidad de cables</label>
+                          <input type="number" class="cantidad-mixto-input" placeholder="Ej. 3" min="1" step="1">
+                        </div>
+
+                        <button type="button" class="btn-quitar-calibre" title="Quitar este calibre" disabled>✕</button>
+                      </div>
+
+                    </div>
+
+                    <button type="button" id="btnAgregarCalibre" class="btn-agregar">
+                      <span class="btn-icon">➕</span> Agregar otro calibre
+                    </button>
+
+                  </div>
+                  <!-- Botón calcular -->
+                    <button type="button" id="btnCalcularRelleno" class="btn-calcular">
+                      <span class="btn-icon"></span> Calcular factor de relleno
+                    </button>
+
+                    <!-- Resultado -->
+                    <div class="resultado-box" id="resultadoFactorRelleno" hidden>
+                      <!-- Se llenará dinámicamente con JS -->
+                    </div>
 
               </div>
         </div>

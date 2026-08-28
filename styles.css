@@ -540,3 +540,69 @@ select {
   font-size: 0.9rem;
   text-align: center;
 }
+.filas-calibres {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.fila-calibre {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 0.8rem;
+  align-items: end;
+}
+
+.btn-quitar-calibre {
+  background: var(--bg-panel-2);
+  border: 1px solid var(--border-soft);
+  color: var(--text-dim);
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.btn-quitar-calibre:hover:not(:disabled) {
+  border-color: var(--danger);
+  color: var(--danger);
+  background: rgba(255, 77, 77, 0.1);
+}
+
+.btn-quitar-calibre:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.btn-agregar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: transparent;
+  border: 1px dashed var(--yellow);
+  color: var(--yellow);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.7rem 1.1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  align-self: flex-start;
+}
+
+.btn-agregar:hover {
+  background: rgba(255, 214, 10, 0.1);
+}
+
+@media (max-width: 640px) {
+  .fila-calibre {
+    grid-template-columns: 1fr 1fr;
+  }
+  .btn-quitar-calibre {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+}

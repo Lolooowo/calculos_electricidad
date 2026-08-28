@@ -19,7 +19,8 @@ document.addEventListener('DOMContentLoaded', () => {
   tabButtons.forEach((btn) => {
     btn.addEventListener('click', () => activateTab(btn.dataset.tab));
   });
-});
+  
+
 //Te acordás que la tabla de area_conductor se le tiene que multiplicar 
 // el area con el numero de cables ya que es la de varios calibres en un tubo.
 
@@ -165,7 +166,7 @@ btnCalcular.addEventListener('click', calcularCaidaTension);
       return parseFloat(inputCorriente.value);
     }else {
       const potencia = parseFloat(inputPotencia.value);
-      const fp = parseFloat(inputFactorPotencia.value);
+      let fp = parseFloat(inputFactorPotencia.value);
       if (fp < 1){
         fp = fp/100;
       }
@@ -176,36 +177,6 @@ btnCalcular.addEventListener('click', calcularCaidaTension);
       return corrienteReal;
   }
 }
-  function validarFormulario() {
-    const errores = [];
-
-    const voltaje = obtenerVoltajeNominal();
-    if (!voltaje || voltaje <= 0) {
-      errores.push('Ingresa un voltaje nominal válido.');
-    }
-
-    const metodo = obtenerMetodoCarga();
-    if (metodo === 'corriente') {
-      if (!inputCorriente.value || parseFloat(inputCorriente.value) <= 0) {
-        errores.push('Ingresa un valor de corriente válido.');
-      }
-    } else {
-      if (!inputPotencia.value || parseFloat(inputPotencia.value) <= 0) {
-        errores.push('Ingresa un valor de potencia válido.');
-      }
-      const fp = parseFloat(inputFactorPotencia.value);
-      if (isNaN(fp) || fp <= 0 || fp > 1) {
-        errores.push('El factor de potencia debe estar entre 0 y 1.');
-      }
-    }
-
-    if (!inputLongitud.value || parseFloat(inputLongitud.value) <= 0) {
-      errores.push('Ingresa una longitud de circuito válida.');
-    }
-
-    return errores;
-  }
-;
 //Seccion pa los calculos varios
 
 const NOMBRES = {
@@ -359,6 +330,225 @@ const TABLA_FINAL ={
   "2": 3.71,
   "3": 8.29
 }
+const ORDEN_TUBOS2 = [
+  "1/2",
+  "3/4",
+  "1",
+  "1 1/4",
+  "1 1/2",
+  "2",
+  "3"
+];
 
 const mm_a_plg = 645.2
 
+const filasCalibresMixto = document.getElementById('filas-calibres-mixto');
+const btnAgregarCalibre = document.getElementById('btnAgregarCalibre');
+
+// Crea una nueva fila de calibre + cantidad, clonando la estructura existente
+function crearFilaCalibre() {
+  const filaExistente = filasCalibresMixto.querySelector('.fila-calibre');
+  const nuevaFila = filaExistente.cloneNode(true);
+
+
+  const select = nuevaFila.querySelector('.calibre-mixto-select');
+  select.selectedIndex = 3; 
+
+  const input = nuevaFila.querySelector('.cantidad-mixto-input');
+  input.value = '';
+
+  const btnQuitar = nuevaFila.querySelector('.btn-quitar-calibre');
+  btnQuitar.disabled = false;
+  btnQuitar.addEventListener('click', () => quitarFilaCalibre(nuevaFila));
+
+  filasCalibresMixto.appendChild(nuevaFila);
+  actualizarBotonesQuitar();
+}
+
+
+function quitarFilaCalibre(fila) {
+  fila.remove();
+  actualizarBotonesQuitar();
+}
+
+function actualizarBotonesQuitar() {
+  const filas = filasCalibresMixto.querySelectorAll('.fila-calibre');
+  filas.forEach((fila) => {
+    const btnQuitar = fila.querySelector('.btn-quitar-calibre');
+    btnQuitar.disabled = filas.length === 1;
+  });
+}
+
+btnAgregarCalibre.addEventListener('click', crearFilaCalibre);
+
+const radiosTipoCalculoRelleno = document.querySelectorAll('input[name="tipoCalculoRelleno"]');
+const camposCalibreUnico = document.getElementById('campos-calibre-unico');
+const camposCalibreMixto = document.getElementById('campos-calibre-mixto');
+
+radiosTipoCalculoRelleno.forEach((radio) => {
+  radio.addEventListener('change', () => {
+    const esVarios = radio.value === 'varios' && radio.checked;
+    camposCalibreUnico.hidden = esVarios;
+    camposCalibreMixto.hidden = !esVarios;
+  });
+});
+
+
+const btnCalcularRelleno = document.getElementById('btnCalcularRelleno');
+const resultadoFactorRelleno = document.getElementById('resultadoFactorRelleno');
+const selectCalibreUnico = document.getElementById('calibreUnico');
+const inputCantidadUnico = document.getElementById('cantidadCablesUnico');
+
+function obtenerModoFactorRelleno() {
+  return document.querySelector('input[name="tipoCalculoRelleno"]:checked').value;
+}
+
+
+function obtenerDatosVariosCalibres() {
+  const filas = filasCalibresMixto.querySelectorAll('.fila-calibre');
+  const datos = [];
+
+  filas.forEach((fila) => {
+    const calibre = fila.querySelector('.calibre-mixto-select').value;
+    const cantidadTexto = fila.querySelector('.cantidad-mixto-input').value;
+    const cantidad = parseInt(cantidadTexto);
+
+    datos.push({ calibre, cantidad, cantidadTexto });
+  });
+
+  return datos;
+}
+
+// Valida que todas las filas tengan una cantidad válida (mayor a 0)
+function validarDatosVariosCalibres(datos) {
+  const errores = [];
+
+  datos.forEach((fila, index) => {
+    if (!fila.cantidadTexto || isNaN(fila.cantidad) || fila.cantidad <= 0) {
+      errores.push(`Fila ${index + 1}: ingresa una cantidad válida para el calibre ${fila.calibre} AWG.`);
+    }
+  });
+
+  return errores;
+}
+
+function calcularFactorRelleno() {
+  const modo = obtenerModoFactorRelleno();
+
+  resultadoFactorRelleno.hidden = false;
+  resultadoFactorRelleno.classList.remove('ok', 'fail');
+
+  if (modo === 'uno') {
+    const calibre = selectCalibreUnico.value;
+    const cantidadCables = parseInt(inputCantidadUnico.value);
+
+    if (!inputCantidadUnico.value || isNaN(cantidadCables) || cantidadCables <= 0) {
+      resultadoFactorRelleno.classList.add('fail');
+      resultadoFactorRelleno.innerHTML = '<strong>Ingresa una cantidad de cables válida (mayor a 0).</strong>';
+      return;
+    }
+
+    const tuboNecesario = buscarTuboUnico(calibre, cantidadCables);
+
+    if (tuboNecesario === null) {
+      resultadoFactorRelleno.classList.add('fail');
+      resultadoFactorRelleno.innerHTML = `
+        <strong>No hay un tubo en la tabla que soporte ${cantidadCables} cables calibre ${calibre} AWG.</strong>
+        <p>Considera dividir los conductores en más de una tubería.</p>
+      `;
+      return;
+    }
+
+    resultadoFactorRelleno.classList.add('ok');
+    resultadoFactorRelleno.innerHTML = `
+      <strong>Tubo necesario: ${tuboNecesario} pulgada"</strong>
+      <p>Para ${cantidadCables} cables calibre ${calibre} AWG.</p>
+    `;
+
+  } else {
+    const datos = obtenerDatosVariosCalibres();
+    const errores = validarDatosVariosCalibres(datos);
+
+    if (errores.length > 0) {
+      resultadoFactorRelleno.classList.add('fail');
+      resultadoFactorRelleno.innerHTML = `
+        <strong>Revisa los siguientes datos:</strong>
+        <ul>${errores.map((e) => `<li>${e}</li>`).join('')}</ul>
+      `;
+      return;
+    }
+
+    const totalmm2 = calcularSeccionTotalMixta(datos)/0.40;
+    const totalplg = totalmm2/mm_a_plg;
+    const diametroTubo = parseFloat(2*Math.sqrt(totalplg/3.1416).toFixed(2));
+    const resultado = ORDEN_TUBOS2
+          .map((tubo) => [tubo, TABLA_FINAL[tubo]])
+          .find(([tubo, valorTabla]) => {
+          console.log(
+                      `Tubo ${tubo}: ${valorTabla} >= ${diametroTubo} =`,
+                        valorTabla >= diametroTubo
+                      );
+
+          return valorTabla >= diametroTubo;
+      });
+
+    const tubofinal = resultado ? resultado[0] : null;
+    if (!tubofinal) {
+      resultadoFactorRelleno.classList.add('fail');
+      resultadoFactorRelleno.innerHTML = `
+        <strong>No hay un tubo en la tabla que soporte la sección total de ${totalmm2.toFixed(2)} mm².</strong>
+        <p>Considera dividir los conductores en más de una tubería.</p>
+      `;
+      return;
+    }else{
+      resultadoFactorRelleno.classList.add('ok');
+      resultadoFactorRelleno.innerHTML = `
+      <strong>Tubo recomendado:</strong>
+      <ul>El tubo recomendado es ${tubofinal} pulgadas</ul>
+    `;
+    }
+  }
+}
+function buscarTuboUnico(calibre, cantidadCables) {
+  const filaCalibre = TABLA_UN_CALIBRE[calibre];
+
+  for (let i = 0; i < ORDEN_TUBOS.length; i++) {
+    const tubo = ORDEN_TUBOS[i];
+    const maximoPermitido = filaCalibre[tubo];
+
+    if (maximoPermitido !== undefined && cantidadCables <= maximoPermitido) {
+      return tubo;
+    }
+  }
+  return null;
+}
+function calcularSeccionTotalMixta(datos) {
+  let seccionTotalMm2 = 0;
+
+  datos.forEach((fila) => {
+    const seccionUnitaria = TABLA_VARIOS_CALIBRES[fila.calibre]["1"];
+    seccionTotalMm2 += seccionUnitaria * fila.cantidad;
+  });
+
+  return seccionTotalMm2;
+}
+
+
+
+
+
+
+btnCalcularRelleno.addEventListener('click', calcularFactorRelleno);
+
+
+
+
+
+
+
+
+
+
+
+//estas llaves que estan abajo son del dom, todo tiene que estar adentro si no, vale madre xdddd
+});
