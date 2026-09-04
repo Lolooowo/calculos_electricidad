@@ -278,8 +278,7 @@ function calcularVarios() {
   resultadoVarios.classList.add('ok');
   resultadoVarios.innerHTML = `
     <strong>${NOMBRES[magnitud]} (${magnitud}) = ${resultado.toFixed(3)} ${UNIDADES[magnitud]}</strong>
-    <p>Calculado con: ${opcion.texto}</p>
-  `;
+0  `;
 }
 
 selectMagnitud.addEventListener('change', actualizarOpcionesDatos);
@@ -288,7 +287,7 @@ btnCalcularVarios.addEventListener('click', calcularVarios);
 
 actualizarOpcionesDatos();
 
-//Tabla para un solo calibre en Factor de relleno
+//Tabla pa un solo calibre en Factor de relleno
 const TABLA_UN_CALIBRE = {
   "18":   { "1/2": 23, "3/4": 40, "1": 60, "1 1/4": 115, "1 1/2": 157, "2": 257, "3": 550 },
   "16":   { "1/2": 18, "3/4": 31, "1": 50, "1 1/4": 90,  "1 1/2": 122, "2": 200, "3": 480 },
@@ -309,7 +308,7 @@ const TABLA_UN_CALIBRE = {
 
 const ORDEN_TUBOS = ["1/2", "3/4", "1", "1 1/4", "1 1/2", "2", "3"];
 
-//Tabla para varios calibres de cable en el tubo 
+//Tabla pa varios calibres de cable en el tubo 
 const TABLA_VARIOS_CALIBRES = {
   "14": {"1":9.24 },
   "12": {"1":12.0 },
@@ -345,7 +344,7 @@ const mm_a_plg = 645.2
 const filasCalibresMixto = document.getElementById('filas-calibres-mixto');
 const btnAgregarCalibre = document.getElementById('btnAgregarCalibre');
 
-// Crea una nueva fila de calibre + cantidad, clonando la estructura existente
+// esta funcion es pa crear las filas nuevas cuando vamos a meter calibres mixtos
 function crearFilaCalibre() {
   const filaExistente = filasCalibresMixto.querySelector('.fila-calibre');
   const nuevaFila = filaExistente.cloneNode(true);
